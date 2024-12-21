@@ -60,11 +60,11 @@ jobs:
       - name: Update Info
         if: matrix.config.type == 'info'
         run: |
-          git clone https://${GIT_SECRET_MAIN}@github.com/Clurfe/clang-builder.git -b clang/main
+          git clone https://${GIT_SECRET_MAIN}@github.com/XeroMz69/Bebas.git -b main
           cd clang-builder
           echo "$(date +"%Y%m%d")" >> last-build.txt
-          git config user.name "Clurfe"
-          git config user.email "zycromerz@gmail.com"
+          git config user.name "XeroMz69"
+          git config user.email "adamyd18@gmail.com"
           git add last-build.txt
           git commit -sm "update last-build.txt to $(date +"%Y%m%d")"
           git show
