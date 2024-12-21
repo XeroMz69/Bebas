@@ -34,7 +34,7 @@ jobs:
 
     name: Clang-${{ matrix.config.jobs }}
     
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     container: 
       image: zycromerz/tcdocker:v2
