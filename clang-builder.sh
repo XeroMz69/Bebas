@@ -73,49 +73,6 @@ fi
 #     AddBolt
 # fi
 
-if [[ -z "${GIT_SECRET}" ]] || [[ -z "${BOT_TOKEN}" ]];then
-    msg "something is missing, aborting . . ."
-    exit
-fi
-
-wget -q https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-$EsOne-lastbuild.txt -O result.txt || echo 'blank' > result.txt
-wget -q https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-$EsOne-commit.txt -O result-b.txt || echo 'blank' > result-b.txt
-wget -q https://raw.githubusercontent.com/ZyCromerZ/binutils-maker/main/result/binutils-master.date -O result-c.txt || echo 'blank' > result-c.txt
-
-if [[ "$(cat result-c.txt)" != 'blank' ]];then
-    GetDt="$(cat result-c.txt)"
-    wget -q https://github.com/ZyCromerZ/binutils-maker/releases/download/master-${GetDt}-up/binutils-master.sha512 -O sha512 || echo 'blank' > sha512
-    if [[ "$(cat sha512)" != 'blank' ]];then
-        urlA="$(echo https://sourceware.org/pub/binutils/releases/{binutils_tarball.name} | sed -r 's/\//\\\//g')"
-        urlB="$(echo https://sourceware.org/pub/binutils/releases/sha512.sum | sed -r 's/\//\\\//g')"
-        urls="$(echo "https://github.com/ZyCromerZ/binutils-maker/releases/download/master-${GetDt}-up/binutils-master.tar.xz" | sed -r 's/\//\\\//g' )"
-        urlt="$(echo "https://github.com/ZyCromerZ/binutils-maker/releases/download/master-${GetDt}-up/binutils-master.sha512" | sed -r 's/\//\\\//g' )"
-        sha512x="$(cat sha512)"
-        sed -i "s/${urlA}/${urls}/" build-binutils.py && msg "update url to ${urls}"
-        sed -i "s/binutils-2.40/binutils-master/" build-binutils.py && msg "update binutils-2.40 to binutils-master"
-        sed -i "s/${urlB}/${urlt}/" build-binutils.py && msg "update sha to ${sha512x}"
-        rm -rf sha512
-    fi
-fi
-
-if [[ "$CheckDuplicate" == "Y" ]];then
-    if [[ "$(cat result.txt)" == *"$TagsDateF"* ]];then
-        # Stop="Y"
-        msg "Today Clang $EsOne build already compiled"
-        exit
-    # elif [[ "$(cat result.txt)" == "blank" ]];then
-    #     Stop="N"
-    fi
-
-    if [[ "$(curl -X GET -H "Cache-Control: no-cache" https://api.github.com/repos/llvm/llvm-project/commits/$UseBranch | grep commit)" == *"commits/$(cat result-b.txt)"* ]];then
-        Stop="Y"
-        msg "Latest clang $EsOne already compiled"
-        exit
-    fi
-fi
-
-rm -rf result.txt result-b.txt result-c.txt
-
 # if [[ "$UseBranch" != "main" ]] && [[ "$(date +"%u")" != "1" ]];then
 #     # Stop="Y"
 #     msg "for $UseBranch, only can be compiled on monday"
@@ -130,7 +87,7 @@ TomTal=$(($TomTal+1))
 # --pgo "kernel-defconfig-slim" \
 msg "projects : clang;compiler-rt;lld;polly;openmp${EXTRA_PRJ}"
 ./build-llvm.py \
-    --clang-vendor "ZyC" \
+    --clang-vendor "Xero" \
     --targets "AArch64;ARM;X86" \
     --defines "LLVM_PARALLEL_COMPILE_JOBS=$TomTal LLVM_PARALLEL_LINK_JOBS=$TomTal CMAKE_C_FLAGS='-g0 -O3' CMAKE_CXX_FLAGS='-g0 -O3' LLVM_USE_LINKER=lld LLVM_ENABLE_LLD=ON" \
     --shallow-clone \
@@ -148,7 +105,7 @@ UploadAgain()
     # fail="n"
     ./github-release upload \
         --security-token "$GIT_SECRET" \
-        --user ZyCromerZ \
+        --user XeroMz69 \
         --repo Clang \
         --tag ${clang_version}-${TagsDate}-release \
         --name "$ZipName" \
@@ -246,11 +203,11 @@ if [[ "$fail" == "n" ]];then
     clang_version="$($DIR/install/bin/clang --version | head -n1 | cut -d' ' -f4)"
     clang_version_f="$($DIR/install/bin/clang --version | head -n1)"
 
-    git config --global user.name 'ZyCromerZ'
-    git config --global user.email 'neetroid97@gmail.com'
+    git config --global user.name 'XeroMz69'
+    git config --global user.email 'adamyd18@gmail.com'
 
     ZipName="Clang-$clang_version-${TagsDate}.tar.gz"
-    ClangLink="https://github.com/ZyCromerZ/Clang/releases/download/${clang_version}-${TagsDate}-release/$ZipName"
+    ClangLink="https://github.com/XeroMz69/Clang/releases/download/${clang_version}-${TagsDate}-release/$ZipName"
 
     pushd $DIR/install || exit
     echo "# Quick Info" > README.md
@@ -265,7 +222,7 @@ if [[ "$fail" == "n" ]];then
     popd || exit
 
     if [[ ! -z "$clang_version" ]];then
-        git clone https://${GIT_SECRET}@github.com/ZyCromerZ/Clang -b main $(pwd)/FromGithub
+        git clone https://${GIT_SECRET}@github.com/XeroMz69/Clang -b main $(pwd)/FromGithub
         pushd $(pwd)/FromGithub || exit
         echo "$TagsDateF" > Clang-$EsOne-lastbuild.txt
         echo "$ClangLink" > Clang-$EsOne-link.txt
@@ -292,7 +249,7 @@ if [[ "$fail" == "n" ]];then
         chmod +x github-release
         ./github-release release \
             --security-token "$GIT_SECRET" \
-            --user ZyCromerZ \
+            --user XeroMz69 \
             --repo Clang \
             --tag ${clang_version}-${TagsDate}-release \
             --name "Clang-${clang_version}-${TagsDate}-release" \
@@ -309,20 +266,6 @@ if [[ "$fail" == "n" ]];then
         TotalTry="0"
         UploadAgain
 
-        if [ "$fail" == "y" ];then
-            pushd $(pwd)/FromGithub || exit
-            git push -d origin ${clang_version}-${TagsDate}
-            git push -d origin ${clang_version}-${TagsDate}-release
-            git checkout main
-            git reset --hard HEAD~1
-            git push -f origin main
-            popd || exit
-        else
-            curl -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id="-1001628919239" \
-                -d "disable_web_page_preview=true" \
-                -d "parse_mode=html" \
-                -d text="New Toolchain Already Builded boy%0ADate : <code>$TagsDateF</code>%0A<code> --- Detail Info About it --- </code>%0AClang version : <code>$clang_version_f</code>%0ABINUTILS version : <code>$binutils_ver</code>%0A%0ALink downloads : <code>$ClangLink</code>%0A%0A-- uWu --"
-        fi
     else
         msg "clang version not found, maybe broken :/"
     fi
