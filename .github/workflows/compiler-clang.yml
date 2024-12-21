@@ -61,7 +61,7 @@ jobs:
         if: matrix.config.type == 'info'
         run: |
           git clone https://${GIT_SECRET_MAIN}@github.com/XeroMz69/Bebas.git -b main
-          cd clang-builder
+          cd Bebas
           echo "$(date +"%Y%m%d")" >> last-build.txt
           git config user.name "XeroMz69"
           git config user.email "adamyd18@gmail.com"
