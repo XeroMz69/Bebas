@@ -186,7 +186,7 @@ if [[ "$fail" == "n" ]];then
         cd out
         chmod +x github-release
         ./github-release release \
-            --security-token "$GITHUB_TOKEN" \
+            --security-token "$GIT_SECRET_MAIN" \
             --user XeroMz69 \
             --repo Clang \
             --tag Xero-Clang-20.0.0 \
