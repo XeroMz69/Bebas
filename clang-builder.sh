@@ -191,8 +191,8 @@ if [[ "$fail" == "n" ]];then
             --user XeroMz69 \
             --repo Clang \
             --tag Xero-Clang-20.0.0 \
-            --description "$(cat README.md)"
-            --name "$ZipName"
+            --description "$(cat README.md)" \
+            --name "$ZipName" \
             --file "$ZipName"
 
         # ./github-release upload \
