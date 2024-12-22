@@ -180,6 +180,7 @@ if [[ "$fail" == "n" ]];then
     echo "* <a href=$ClangLink>$ZipName</a>" >> readme.md
     tar -czvf ../"$ZipName" *
     mv ../"$ZipName" $WORKDIR/out/.
+    mv README.md $WORKDIR/out/.
     popd || exit
 
         cp github-release out/.
@@ -190,7 +191,7 @@ if [[ "$fail" == "n" ]];then
             --user XeroMz69 \
             --repo Clang \
             --tag Xero-Clang-20.0.0 \
-            --description "$(cat install/README.md)"
+            --description "$(cat README.md)"
             --name "$ZipName"
             --file "$ZipName"
 
