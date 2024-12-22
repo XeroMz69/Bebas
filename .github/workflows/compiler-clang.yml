@@ -12,8 +12,8 @@ env:
   GITLAB_NAME: ${{ secrets.GITLAB_NAME }}
   GITLAB_SECRET: ${{ secrets.GITLAB_SECRET }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-  GIT_SECRET: ${{ secrets.GITHUB_SECRET }}
-  GIT_SECRET_MAIN: ${{ secrets.GITHUB_SECRET_MAIN }}
+  GIT_SECRET: ${{ secrets.GIT_SECRET }}
+  GIT_SECRET_MAIN: ${{ secrets.GIT_SECRET_MAIN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
