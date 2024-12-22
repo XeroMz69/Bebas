@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+WORKDIR="$(pwd)"
+mkdir -p $WORKDIR/out
 # Function to show an informational message
 msg() {
     echo -e "\e[1;32m$*\e[0m"
@@ -99,47 +100,6 @@ msg "projects : clang;compiler-rt;lld;polly;openmp${EXTRA_PRJ}"
 
 # echo "idk" > $DIR/stop-spam-echo.txt
 
-
-UploadAgain()
-{
-    # fail="n"
-    ./github-release upload \
-        --security-token "$GIT_SECRET" \
-        --user XeroMz69 \
-        --repo Clang \
-        --tag ${clang_version}-${TagsDate}-release \
-        --name "$ZipName" \
-        --file "$ZipName" &>reup-info.txt || fail="y"
-    TotalTry=$(($TotalTry+1))
-    if [ "$fail" == "y" ];then
-        if [[ "$(cat reup-info.txt)" == *"already_exists"* ]];then
-            TotalTry="360"
-            fail="n"
-            msg "upload failed, because file already exists"
-        fi
-        if [[ "$(cat reup-info.txt)" == *"Average"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Speed"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Time"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Current"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Dload"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Upload"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Total"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Spent"* ]] && \
-            [[ "$(cat reup-info.txt)" == *"Left"* ]];then
-            TotalTry="360"
-            fail="n"
-            msg "Upload Success"
-        fi
-        if [ "$TotalTry" != "360" ];then
-            sleep 10s
-            msg "upload failed, re-upload again"
-            UploadAgain
-        else
-            rm -rf reup-info.txt
-        fi
-    fi
-}
-
 if [[ "$fail" == "n" ]];then
     $DIR/install/bin/clang --version
 
@@ -206,8 +166,8 @@ if [[ "$fail" == "n" ]];then
     git config --global user.name 'XeroMz69'
     git config --global user.email 'adamyd18@gmail.com'
 
-    ZipName="Clang-$clang_version-${TagsDate}.tar.gz"
-    ClangLink="https://github.com/XeroMz69/Clang/releases/download/${clang_version}-${TagsDate}-release/$ZipName"
+    ZipName="Xero-Clang-$clang_version-${TagsDate}.tar.gz"
+    ClangLink="https://github.com/XeroMz69/Clang/releases/download/Xero-Clang-20.0.0/$ZipName"
 
     pushd $DIR/install || exit
     echo "# Quick Info" > README.md
@@ -219,41 +179,20 @@ if [[ "$fail" == "n" ]];then
     echo "# link downloads:" >> readme.md
     echo "* <a href=$ClangLink>$ZipName</a>" >> readme.md
     tar -czvf ../"$ZipName" *
+    mv ../"$ZipName" $WORKDIR/out/.
     popd || exit
 
-    if [[ ! -z "$clang_version" ]];then
-        git clone https://${GIT_SECRET}@github.com/XeroMz69/Clang -b main $(pwd)/FromGithub
-        pushd $(pwd)/FromGithub || exit
-        echo "$TagsDateF" > Clang-$EsOne-lastbuild.txt
-        echo "$ClangLink" > Clang-$EsOne-link.txt
-        echo "$llvm_commit" > Clang-$EsOne-commit.txt
-        git add . && git commit -asm "Upload $clang_version_f"
-        git checkout -b ${clang_version}-${TagsDate}
-        cp ../install/README.md .
-        git add . && git commit -asm "Update Readme.md"
-        git tag ${clang_version}-${TagsDate}-release -m "Upload $clang_version_f"
-        git push -f origin main ${clang_version}-${TagsDate}
-        git push -f origin ${clang_version}-${TagsDate}-release
-        if [[ "$UseBranch" == "main" ]];then
-            git checkout --orphan for-strip
-            rm -fr * 
-            cp -af $DIR/install/bin/aarch64-linux-gnu-strip .
-            cp -af $DIR/install/bin/arm-linux-gnueabi-strip .
-            cp -af $DIR/install/bin/strip .
-            echo "# Just For Personal Use Only" > README.md
-            git add . && git commit -asm "add strip from ${clang_version_f}"
-            git push -f origin for-strip
-        fi
-        popd || exit
-
+        cp github-release out/.
+        cd out
         chmod +x github-release
         ./github-release release \
-            --security-token "$GIT_SECRET" \
+            --security-token "$GITHUB_TOKEN" \
             --user XeroMz69 \
             --repo Clang \
-            --tag ${clang_version}-${TagsDate}-release \
-            --name "Clang-${clang_version}-${TagsDate}-release" \
+            --tag Xero-Clang-20.0.0 \
             --description "$(cat install/README.md)"
+            --name "$ZipName"
+            --file "$ZipName"
 
         # ./github-release upload \
         #     --security-token "$GIT_SECRET" \
