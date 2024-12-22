@@ -12,8 +12,9 @@ env:
   GITLAB_NAME: ${{ secrets.GITLAB_NAME }}
   GITLAB_SECRET: ${{ secrets.GITLAB_SECRET }}
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-  GIT_SECRET: ${{ secrets.GIT_SECRET }}
-  GIT_SECRET_MAIN: ${{ secrets.GIT_SECRET_MAIN }}
+  GIT_SECRET: ${{ secrets.GITHUB_SECRET }}
+  GIT_SECRET_MAIN: ${{ secrets.GITHUB_SECRET_MAIN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -34,7 +35,7 @@ jobs:
 
     name: Clang-${{ matrix.config.jobs }}
     
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     container: 
       image: zycromerz/tcdocker:v2
@@ -69,3 +70,15 @@ jobs:
           git commit -sm "update last-build.txt to $(date +"%Y%m%d")"
           git show
           git push --all origin -f
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          repository: XeroMz69/Clang
+          files: |
+            ${{ github.workspace }}/out/*
+          name: Xero-Clang-20.0.0
+          tag_name: Clang-20.0.0
+          body: |
+            apalah
+          make_latest: true
