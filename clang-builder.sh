@@ -181,6 +181,14 @@ if [[ "$fail" == "n" ]];then
     tar -czvf ../"$ZipName" *
     mv ../"$ZipName" $WORKDIR/out/.
     mv README.md $WORKDIR/out/.
+    git clone https://${GIT_SECRET_MAIN}@github.com/XeroMz69/Clang.git -b main $WORKDIR/Clang
+    cp -rf * $WORKDIR/Clang/.
+    cp -f $WORKDIR/out/README.md $WORKDIR/.
+    cd $WORKDIR/Clang
+    git add .
+    git commit -sm "update . to $(cat $WORKDIR/README.md)"
+    git show
+    git push --all origin -f
     popd || exit
 
 fi
