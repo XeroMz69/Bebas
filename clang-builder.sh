@@ -183,30 +183,4 @@ if [[ "$fail" == "n" ]];then
     mv README.md $WORKDIR/out/.
     popd || exit
 
-        cp github-release out/.
-        cd out
-        chmod +x github-release
-        ./github-release release \
-            --security-token "$GIT_SECRET_MAIN" \
-            --user XeroMz69 \
-            --repo Clang \
-            --tag Xero-Clang-20.0.0 \
-            --description "$(cat README.md)" \
-            --name "$ZipName" \
-            --file "$ZipName"
-
-        # ./github-release upload \
-        #     --security-token "$GIT_SECRET" \
-        #     --user ZyCromerZ \
-        #     --repo Clang \
-        #     --tag ${clang_version}-${TagsDate}-release \
-        #     --name "$ZipName" \
-        #     --file "$ZipName" || fail="y"
-
-        TotalTry="0"
-        UploadAgain
-
-    else
-        msg "clang version not found, maybe broken :/"
-    fi
 fi
