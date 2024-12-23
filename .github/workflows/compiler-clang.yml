@@ -71,3 +71,13 @@ jobs:
           git show
           git push --all origin -f
 
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: XeroMz69/Clang
+          body_path: ${{ github.workspace }}/out/README.md
+          files: |
+            ${{ github.workspace }}/out/*
+          token: ${GIT_SECRET_MAIN}
+          tag_name: Xero-Clang-20.0.0
+          make_latest: true
