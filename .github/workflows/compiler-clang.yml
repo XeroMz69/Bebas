@@ -59,6 +59,7 @@ jobs:
           bash clang-builder.sh ${{ matrix.config.jobs }} ${{ matrix.config.check_duplicate }}
 
       - name: Upload to Release
+        if: matrix.config.type == 'clang'
         uses: softprops/action-gh-release@v2
         with:
           repository: XeroMz69/Clang
