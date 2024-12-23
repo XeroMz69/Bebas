@@ -57,6 +57,7 @@ jobs:
           bash ci.sh deps
           bash update-clang-version.sh ${{ matrix.config.jobs }}
           bash clang-builder.sh ${{ matrix.config.jobs }} ${{ matrix.config.check_duplicate }}
+          cp -rf clang-${{ matrix.config.jobs }}/out ${{ github.workspace }}/.
 
       - name: Upload to Release
         if: matrix.config.type == 'clang'
@@ -66,6 +67,18 @@ jobs:
           body_path: ${{ github.workspace }}/out/README.md
           files: |
             ${{ github.workspace }}/out/*
+          token: ${GIT_SECRET_MAIN}
+          tag_name: Xero-Clang-20.0.0
+          make_latest: true
+
+      - name: Upload to Release
+        if: matrix.config.type == 'clang'
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: XeroMz69/Clang
+          body_path: clang-${{ matrix.config.jobs }}/out/README.md
+          files: |
+            clang-${{ matrix.config.jobs }}/out/*
           token: ${GIT_SECRET_MAIN}
           tag_name: Xero-Clang-20.0.0
           make_latest: true
