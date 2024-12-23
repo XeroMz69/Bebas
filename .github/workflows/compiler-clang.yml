@@ -58,6 +58,17 @@ jobs:
           bash update-clang-version.sh ${{ matrix.config.jobs }}
           bash clang-builder.sh ${{ matrix.config.jobs }} ${{ matrix.config.check_duplicate }}
 
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: XeroMz69/Clang
+          body_path: ${{ github.workspace }}/out/README.md
+          files: |
+            ${{ github.workspace }}/out/*
+          token: ${GIT_SECRET_MAIN}
+          tag_name: Xero-Clang-20.0.0
+          make_latest: true
+
       - name: Update Info
         if: matrix.config.type == 'info'
         run: |
@@ -70,14 +81,3 @@ jobs:
           git commit -sm "update last-build.txt to $(date +"%Y%m%d")"
           git show
           git push --all origin -f
-
-      - name: Upload to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          repository: XeroMz69/Clang
-          body_path: ${{ github.workspace }}/out/README.md
-          files: |
-            ${{ github.workspace }}/out/*
-          token: ${GIT_SECRET_MAIN}
-          tag_name: Xero-Clang-20.0.0
-          make_latest: true
