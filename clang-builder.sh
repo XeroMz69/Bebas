@@ -186,7 +186,7 @@ if [[ "$fail" == "n" ]];then
     cp -f $WORKDIR/out/README.md $WORKDIR/.
     cd $WORKDIR/Clang
     git add .
-    git commit -sm "update . to $(cat $WORKDIR/README.md)"
+    git commit -sSm "$(date +"%Y%m%d")" -m "$(cat $WORKDIR/README.md)"
     git show
     git push --all origin -f
     popd || exit
