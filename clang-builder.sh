@@ -185,9 +185,10 @@ if [[ "$fail" == "n" ]];then
     mv * $WORKDIR/Clang/.
     cp -f $WORKDIR/out/README.md $WORKDIR/.
     cd $WORKDIR/Clang
+    git lfs install
+    git lfs track *
     git add .
     git commit -sm "$(date +"%Y%m%d")" -m "$(cat $WORKDIR/README.md)"
-    git show
     git push --all origin -f
     popd || exit
 
