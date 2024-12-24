@@ -66,7 +66,7 @@ jobs:
           body_path: clang-${{ matrix.config.jobs }}/out/README.md
           files: |
             clang-${{ matrix.config.jobs }}/out/*
-          token: ${{ secrets.GIT_SECRET_MAIN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: Xero-Clang-20.0.0
           make_latest: true
 
