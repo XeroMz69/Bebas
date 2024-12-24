@@ -54,7 +54,7 @@ function do_deps() {
         texinfo \
         xz-utils \
         zlib1g-dev 
-        curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+        curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
 }
 
 function do_kernel() {
