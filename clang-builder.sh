@@ -185,6 +185,8 @@ if [[ "$fail" == "n" ]];then
     mv * $WORKDIR/Clang/.
     cp -f $WORKDIR/out/README.md $WORKDIR/.
     cd $WORKDIR/Clang
+    git config --global user.name 'XeroMz69'
+    git config --global user.email 'adamyd18@gmail.com'
     git lfs install
     git lfs track *
     git add .
