@@ -14,7 +14,6 @@ env:
   BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   GIT_SECRET: ${{ secrets.GIT_SECRET }}
   GIT_SECRET_MAIN: ${{ secrets.GIT_SECRET_MAIN }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -60,15 +59,16 @@ jobs:
 
       - name: Upload to Release
         if: matrix.config.type == 'clang'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
           repository: XeroMz69/Clang
           body_path: clang-${{ matrix.config.jobs }}/out/README.md
           files: |
             clang-${{ matrix.config.jobs }}/out/*
-          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: Xero-Clang-20.0.0
           make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Info
         if: matrix.config.type == 'info'
