@@ -193,6 +193,24 @@ if [[ "$fail" == "n" ]];then
     git add .
     git commit -sm "$(date +"%Y%m%d")" -m "$(cat $WORKDIR/README.md)"
     git push --all origin -f
+    cd $WORKDIR
+    cd out
     popd || exit
+
+    chmod +x github-release
+    ./github-release release \
+            --security-token "$GIT_SECRET_MAIN" \
+            --user XeroMz69 \
+            --repo Clang \
+            --tag Xero-Clang-20.0.0 \
+            --description "$(cat out/README.md)"
+    
+    ./github-release upload \
+             --security-token "$GIT_SECRET_MAIN" \
+             --user XeroMz69 \
+             --repo Clang \
+             --tag Xero-Clang-20.0.0 \
+             --name "$ZipName" \
+             --file "out/"$ZipName"" || fail="y"
 
 fi
