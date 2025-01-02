@@ -167,6 +167,7 @@ if [[ "$fail" == "n" ]];then
     git config --global user.email 'adamyd18@gmail.com'
 
     ZipName="Xero-Clang-$clang_version-${TagsDate}.tar.gz"
+    UploadTag="Xero-Clang-$clang_version-${TagsDate}"
     ClangLink="https://github.com/XeroMz69/Clang/releases/download/Xero-Clang-20.0.0-$(date +"%Y%m%d")/$ZipName"
 
     pushd $DIR/install || exit
@@ -202,14 +203,14 @@ if [[ "$fail" == "n" ]];then
             --security-token "$GIT_SECRET_MAIN" \
             --user XeroMz69 \
             --repo Clang \
-            --tag Xero-Clang-20.0.0-$(date +"%Y%m%d") \
+            --tag "$UploadTag" \
             --description "$(cat out/README.md)"
     
     ./github-release upload \
              --security-token "$GIT_SECRET_MAIN" \
              --user XeroMz69 \
              --repo Clang \
-             --tag Xero-Clang-20.0.0-$(date +"%Y%m%d") \
+             --tag "$UploadTag" \
              --name "$ZipName" \
              --file "out/"$ZipName"" || fail="y"
 
