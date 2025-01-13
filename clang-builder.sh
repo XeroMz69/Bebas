@@ -183,6 +183,7 @@ if [[ "$fail" == "n" ]];then
     mv ../"$ZipName" $WORKDIR/out/.
     mv README.md $WORKDIR/out/.
     git clone https://${GIT_SECRET_MAIN}@github.com/XeroMz69/Clang.git -b main $WORKDIR/Clang
+    rm -rf $WORKDIR/Clang/*
     mv * $WORKDIR/Clang/.
     cp -f $WORKDIR/out/README.md $WORKDIR/.
     cd $WORKDIR/Clang
