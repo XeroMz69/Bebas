@@ -182,21 +182,7 @@ if [[ "$fail" == "n" ]];then
     tar -czvf ../"$ZipName" *
     mv ../"$ZipName" $WORKDIR/out/.
     mv README.md $WORKDIR/out/.
-    git clone https://${GIT_SECRET_MAIN}@github.com/XeroMz69/Clang.git -b main $WORKDIR/Clang
-    rm -rf $WORKDIR/Clang/*
-    mv * $WORKDIR/Clang/.
-    cp -f $WORKDIR/out/README.md $WORKDIR/.
-    cd $WORKDIR/Clang
-    git config --global user.name 'XeroMz69'
-    git config --global user.email 'adamyd18@gmail.com'
-    git lfs install
-    git lfs track libclang-cpp.so.20.0git
-    git lfs track bin/clang-repl
-    git add .
-    git commit -sm "$(date +"%Y%m%d")" -m "$(cat $WORKDIR/README.md)"
-    git push --all origin -f
     cd $WORKDIR
-    cd out
     popd || exit
 
     chmod +x github-release
