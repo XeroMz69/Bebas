@@ -193,22 +193,24 @@ if [[ "$fail" == "n" ]];then
     git commit -sm "$(date +"%Y%m%d")" -m "$(cat $WORKDIR/README.md)"
     git push --all origin -f
     cd $WORKDIR
+    echo $clang_version >> version.txt
+    mv version.txt out/.
     popd || exit
 
-    chmod +x github-release
-    ./github-release release \
-            --security-token "$GIT_SECRET_MAIN" \
-            --user XeroMz69 \
-            --repo Clang \
-            --tag "$UploadTag" \
-            --description "$(cat out/README.md)"
+    #chmod +x github-release
+    #./github-release release \
+    #        --security-token "$GIT_SECRET_MAIN" \
+    #        --user XeroMz69 \
+    #        --repo Clang \
+    #        --tag "$UploadTag" \
+    #        --description "$(cat out/README.md)"
     
-    ./github-release upload \
-             --security-token "$GIT_SECRET_MAIN" \
-             --user XeroMz69 \
-             --repo Clang \
-             --tag "$UploadTag" \
-             --name "$ZipName" \
-             --file "out/"$ZipName"" || fail="y"
+    #./github-release upload \
+    #         --security-token "$GIT_SECRET_MAIN" \
+    #         --user XeroMz69 \
+    #         --repo Clang \
+    #         --tag "$UploadTag" \
+    #         --name "$ZipName" \
+    #         --file "out/"$ZipName"" || fail="y"
 
 fi
