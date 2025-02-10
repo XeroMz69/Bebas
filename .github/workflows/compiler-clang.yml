@@ -66,10 +66,11 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: clang-${{ matrix.config.jobs }}/out/*.tar.gz
-          tag_name: ${UploadTag}
+          tag_name: ${{ env.UploadTag }}
           token: ${{ secrets.GIT_SECRET_MAIN }}
-          name: ${UploadTag}
-          body: "$(cat clang-${{ matrix.config.jobs }}/out/README.md)"
+          name: ${{ env.UploadTag )}
+          body_path: ${{ matrix.config.jobs }}/out/README.md
+          repository: XeroMz69/Clang
    
       - name: Update Info
         if: matrix.config.type == 'info'
