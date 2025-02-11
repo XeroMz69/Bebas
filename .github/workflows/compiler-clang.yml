@@ -68,7 +68,7 @@ jobs:
           files: clang-${{ matrix.config.jobs }}/out/*.tar.gz
           tag_name: ${{ env.UploadTag }}
           token: ${{ secrets.GIT_SECRET_MAIN }}
-          name: ${{ env.UploadTag )}
+          name: ${{ env.UploadTag }}
           body_path: ${{ matrix.config.jobs }}/out/README.md
           repository: XeroMz69/Clang
    
