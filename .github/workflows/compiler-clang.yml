@@ -62,7 +62,7 @@ jobs:
         env:
           TagsDate: "$(date +'%Y%m%d')"
           clang_version: "$(cat clang-${{ matrix.config.jobs }}/out/version.txt)"
-          UploadTag: "Xero-Clang-${clang_version}-${TagsDate}"
+          UploadTag: "Xero-Clang-${{ clang_version }}-${{ TagsDate }}"
         uses: softprops/action-gh-release@v1
         with:
           files: clang-${{ matrix.config.jobs }}/out/*.tar.gz
