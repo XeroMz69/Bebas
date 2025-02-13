@@ -57,18 +57,19 @@ jobs:
           bash update-clang-version.sh ${{ matrix.config.jobs }}
           bash clang-builder.sh ${{ matrix.config.jobs }} ${{ matrix.config.check_duplicate }}
 
+      - name: Set Env
+        run: |
+          echo "::set-env name=TagsDate::$(date +'%Y%m%d')"
+          echo "::set-env name=ClangVersion::$(cat clang-${{ matrix.config.jobs }}/out/version.txt)"
+          
       - name: Upload Release
         if: matrix.config.type == 'clang'
-        env:
-          TagsDate: "$(date +'%Y%m%d')"
-          clang_version: "$(cat clang-${{ matrix.config.jobs }}/out/version.txt)"
-          UploadTag: "Xero-Clang-${{ env.clang_version }}-${{ env.TagsDate }}"
         uses: softprops/action-gh-release@v1
         with:
           files: clang-${{ matrix.config.jobs }}/out/*.tar.gz
-          tag_name: "Xero-Clang-${{ env.TagsDate }}"
+          tag_name: "Xero-Clang-${{ env.clang_version }}-${{ env.TagsDate }}"
           token: ${{ secrets.GIT_SECRET_MAIN }}
-          name: "Xero-Clang-${{ env.TagsDate }}"
+          name: "Xero-Clang-${{ env.clang_version }}-${{ env.TagsDate }}"
           body_path: clang-${{ matrix.config.jobs }}/out/README.md
           repository: XeroMz69/Clang
    
