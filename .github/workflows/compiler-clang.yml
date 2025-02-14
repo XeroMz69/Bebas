@@ -67,9 +67,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: clang-${{ matrix.config.jobs }}/out/*.tar.gz
-          tag_name: "Xero-Clang-$ClangVersion-$TagsDate"
+          tag_name: "Xero-Clang-${{ env.ClangVersion }}-${{ env.TagsDate }}"
           token: ${{ secrets.GIT_SECRET_MAIN }}
-          name: "Xero-Clang-$ClangVersion-$TagsDate"
+          name: "Xero-Clang-${{ env.ClangVersion }}-${{ env.TagsDate }}"
           body_path: clang-${{ matrix.config.jobs }}/out/README.md
           repository: XeroMz69/Clang
    
