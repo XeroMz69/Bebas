@@ -168,7 +168,7 @@ if [[ "$fail" == "n" ]];then
 
     ZipName="Xero-Clang-$clang_version-${TagsDate}.tar.gz"
     UploadTag="Xero-Clang-$clang_version-${TagsDate}"
-    ClangLink="https://github.com/XeroMz69/Clang/releases/download/Xero-Clang-$clang_version-$(date +"%Y%m%d").1/$ZipName"
+    ClangLink="https://github.com/XeroMz69/Clang/releases/download/Xero-Clang-$(date +"%Y%m%d").1/$ZipName"
 
     pushd $DIR/install || exit
     echo "# Quick Info" > README.md
