@@ -4,8 +4,6 @@ on:
   # push:
   #   branches:
   #     - clang/*
-  schedule:
-   - cron: '0 7 * * 1'
   workflow_dispatch:
 
 env:
